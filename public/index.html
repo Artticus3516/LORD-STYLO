@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lord Stylo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.0/marked.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-gradient-to-br from-slate-900 to-blue-950 min-h-screen flex items-center justify-center p-4">
+
+<div class="bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-4xl border border-slate-700">
+    <h1 class="text-4xl font-extrabold text-center text-blue-400 mb-6">
+        <span class="block">L.O.R.D S.T.Y.L.O</span>
+    </h1>
+    <p class="text-center text-slate-300 mb-8">
+        Paste your study material in form of text
+    </p>
+
+
+    <div class="mb-6">
+        <label for="studyMaterialText" class="block text-slate-200 text-sm font-semibold mb-2">
+            Your Study Material: (Optional)
+        </label>
+        <textarea
+                id="studyMaterialText"
+                rows="10"
+                class="w-full p-4 border border-slate-600 rounded-lg bg-slate-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out resize-y"
+                placeholder="Paste your notes, article, or textbook content here..."
+        ></textarea>
+    </div>
+
+<!--    <div class="mb-6 flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">-->
+<!--        <div class="flex-1">-->
+<!--            <label for="fileInput" class="block text-slate-200 text-sm font-semibold mb-2">-->
+<!--                Load from File (.txt, .pdf):-->
+<!--            </label>-->
+<!--            <div class="flex space-x-2">-->
+<!--                <input type="file" id="fileInput" accept=".txt,.pdf" class="flex-1 p-2 border border-slate-600 rounded-lg text-sm bg-slate-700 text-white">-->
+<!--                <button id="loadFileButton" class="bg-slate-700 text-slate-200 py-2 px-4 rounded-lg font-bold text-sm hover:bg-slate-600 transition duration-200">Load</button>-->
+<!--            </div>-->
+<!--            <p id="fileWarning" class="text-sm text-red-400 mt-1 hidden">Note: Full PDF text extraction is complex client-side. For best results, copy-paste text from complex PDFs.</p>-->
+<!--        </div>-->
+<!--        <div class="flex-1">-->
+<!--            <label for="urlInput" class="block text-slate-200 text-sm font-semibold mb-2">-->
+<!--                Load from URL:-->
+<!--            </label>-->
+<!--            <div class="flex space-x-2">-->
+<!--                <input type="url" id="urlInput" class="flex-1 p-2 border border-slate-600 rounded-lg bg-slate-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out text-sm" placeholder="https://example.com/article.txt">-->
+<!--                <button id="loadUrlButton" class="bg-slate-700 text-slate-200 py-2 px-4 rounded-lg font-bold text-sm hover:bg-slate-600 transition duration-200">Load</button>-->
+<!--            </div>-->
+<!--            <p id="urlWarning" class="text-sm text-red-400 mt-1 hidden">Warning: Due to CORS, direct fetching from many websites may fail. Please copy-paste content if loading fails.</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="mb-6 flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+        <div class="flex-1">
+            <label for="subjectSelect" class="block text-slate-200 text-sm font-semibold mb-2">
+                Select Subject:
+            </label>
+            <select
+                    id="subjectSelect"
+                    class="w-full p-3 border border-slate-600 rounded-lg bg-slate-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+            >
+                <option value="">-- Select a Subject --</option>
+                <option value="Science">Science</option>
+                <option value="Maths">Maths</option>
+                <option value="English">English</option>
+                <option value="Accounts">Accounts</option>
+                <option value="Economics">Economics</option>
+                <option value="Business Studies">Business Studies</option>
+                <option value="IP">IP (Informatics Practices)</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Social Science">Social Science</option>
+            </select>
+        </div>
+        <div class="flex-1">
+            <label for="classSelect" class="block text-slate-200 text-sm font-semibold mb-2">
+                Select Class (9-12):
+            </label>
+            <select
+                    id="classSelect"
+                    class="w-full p-3 border border-slate-600 rounded-lg bg-slate-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+            >
+                <option value="">-- Select Class --</option>
+                <option value="9th">9th</option>
+                <option value="10th">10th</option>
+                <option value="11th">11th</option>
+                <option value="12th">12th</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-6">
+        <label for="conceptInput" class="block text-slate-200 text-sm font-semibold mb-2">
+            Concept to Explain / For Analogies:
+        </label>
+        <input
+                type="text"
+                id="conceptInput"
+                class="w-full p-3 border border-slate-600 rounded-lg bg-slate-700 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 ease-in-out"
+                placeholder="e.g., 'Photosynthesis' or 'Supply and Demand'"
+        />
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+        <button
+                id="explainConceptButton"
+                class="action-button w-full bg-purple-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="explainConcept"
+                data-original-text="Explain Concept" >
+            <span class="button-text">Explain Concept</span>
+            <div class="loading-spinner ml-2"></div>
+        </button>
+        <button
+                id="summarizeButton"
+                class="action-button w-full bg-sky-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="summarize"
+                data-original-text="Summarize" >
+            <span class="button-text">Summarize</span>
+            <div class="loading-spinner ml-2"></div>
+        </button>
+        <button
+                id="questionsButton"
+                class="action-button w-full bg-violet-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="questions"
+                data-original-text="Generate Questions" >
+            <span class="button-text">Generate Questions</span>
+            <div class="loading-spinner ml-2"></div>
+        </button>
+        <button
+                id="keyPointsButton"
+                class="action-button w-full bg-cyan-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="keypoints"
+                data-original-text="Extract Key Points" >
+            <span class="button-text">Extract Key Points</span>
+            <div class="loading-spinner ml-2"></div>
+        </button>
+        <button
+                id="flashcardsButton"
+                class="action-button w-full bg-fuchsia-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-fuchsia-700 focus:outline-none focus:ring-4 focus:ring-fuchsia-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="flashcards"
+                data-original-text="Create Flashcards" >
+            <span class="button-text">Create Flashcards</span>
+            <div class="loading-spinner ml-2"></div>
+        </button>
+        <button
+                id="generateAnalogiesButton"
+                class="action-button w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-teal-700 focus:outline-none focus:ring-4 focus:ring-teal-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="generateAnalogies"
+                data-original-text="Generate Analogies" >
+            <span class="button-text">Generate Analogies</span>
+            <div class="loading-spinner ml-2"></div>
+        </button>
+        <button
+                id="simplifyLanguageButton"
+                class="action-button w-full bg-emerald-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="simplifyLanguage"
+                data-original-text="Simplify Language" >
+            <span class="button-text">Simplify Language</span>
+            <div class="loading-spinner ml-2"></div>
+        </button>
+    </div>
+
+    <div class="mt-8">
+        <button
+                id="downloadPdfButton"
+                class="w-full bg-blue-800 text-white py-3 px-6 rounded-lg font-bold text-lg hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-500 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center hidden"
+        >
+            Download the Notes
+        </button>
+    </div>
+
+
+    <div id="genresp" class="mt-8 p-6 bg-slate-700 rounded-lg border border-slate-600 shadow-inner hidden">
+        <h2 class="text-2xl font-bold text-blue-400 mb-4" id="responseTitle"></h2>
+        <div id="responseText" class="text-slate-300 leading-relaxed">
+        </div>
+        <div id="flashcardContainer" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        </div>
+    </div>
+
+    <div id="errorMessage" class="mt-4 p-4 bg-red-800 border border-red-700 text-red-200 rounded-lg hidden" role="alert">
+        <p id="errorText"></p>
+    </div>
+    <div class="mt-1">
+        <a href="feed.html" target="_blank">
+            <button
+                id="feedbackButton" class="action-button w-full bg-violet-600 text-white py-3 px-4 rounded-lg font-bold text-base hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                data-action="feedback" data-original-text="Your Feedback is Valuable" >
+            <span class="button-text">Your Feedback is Valuable</span>
+            </button>
+        </a>
+    </div>
+</div>
+
+<div id="keywordModalOverlay" class="modal-overlay hidden"> <div class="modal-content">
+        <h3 class="text-xl font-bold text-slate-100 mb-4">No Study Material Provided</h3>
+        <p class="text-slate-200 mb-4">
+            The "Your Study Material" and "Concept" fields are empty. Would you like to generate results based on a general topic from the internet?
+        </p>
+        <label for="keywordInput" class="block text-slate-200 text-sm font-semibold mb-2">
+            Enter a keyword (e.g., "Class 12 Biology", "Class 11 Physics", "History of India"):
+        </label>
+        <input
+                type="text"
+                id="keywordInput"
+                class="w-full p-3 border border-slate-600 rounded-lg bg-slate-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out mb-6"
+                placeholder="e.g., 'Class 12 Chemistry', 'Class 11 Math'"
+        />
+        <div class="flex justify-end space-x-4">
+            <button
+                    id="cancelKeywordButton"
+                    class="bg-slate-600 text-slate-200 py-2 px-4 rounded-lg font-bold hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400 transition duration-200"
+            >
+                Cancel
+            </button>
+            <button
+                    id="confirmKeywordButton"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200"
+            >
+                Continue
+            </button>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+    // Helper function to show/hide loading spinner and manage button text
+    // Now accepts an optional 'originalText' parameter to reset the button's text correctly
+    const toggleLoading = (button, isLoading, originalText = 'Process') => {
+        const buttonTextSpan = button.querySelector('.button-text');
+        const loadingSpinnerDiv = button.querySelector('.loading-spinner');
+
+        if (isLoading) {
+            buttonTextSpan.style.display = 'none'; // Hide the regular text
+            loadingSpinnerDiv.style.display = 'block'; // Show the spinner
+            // Add a simple SVG spinner if it's missing or truncated in your HTML
+            if (!loadingSpinnerDiv.querySelector('svg')) {
+                 loadingSpinnerDiv.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                 </svg>`;
+            }
+            buttonTextSpan.innerText = 'Loading...'; // Set button text to Loading...
+        } else {
+            buttonTextSpan.style.display = 'block'; // Show the regular text
+            loadingSpinnerDiv.style.display = 'none'; // Hide the spinner
+            buttonTextSpan.innerText = originalText; // Reset button text using the provided originalText
+        }
+    };
+
+    // --- NEW/UPDATED: Unified Function to Send Data to Backend ---
+    async function sendDataToBackend(button, actionType, modalKeyword = '') {
+        const studyMaterial = document.getElementById('studyMaterialText').value;
+        const concept = document.getElementById('conceptInput').value;
+        const subject = document.getElementById('subjectSelect').value;
+        const sclass = document.getElementById('classSelect').value;
+
+        const responseContainerDiv = document.getElementById('genresp');
+        const responseTextDiv = document.getElementById('responseText');
+        const flashcardContainerDiv = document.getElementById('flashcardContainer');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const errorTextP = document.getElementById('errorText');
+        const responseTitle = document.getElementById('responseTitle');
+
+        // Clear previous outputs/errors
+        responseTextDiv.innerHTML = '';
+        flashcardContainerDiv.innerHTML = ''; // Clear flashcards too
+        responseContainerDiv.classList.add('hidden');
+        errorMessageDiv.classList.add('hidden');
+        errorTextP.innerText = ''; // Clear error text
+
+        // Validation: Check if study material or concept or modal keyword is present
+        if (!studyMaterial.trim() && !concept.trim() && !modalKeyword.trim()) {
+            // Show modal if nothing is provided
+            document.getElementById('keywordModalOverlay').classList.remove('hidden');
+            // Do NOT call toggleLoading(button, true) here, as we are waiting for user input
+            // The actual API call will happen after confirmKeywordButton is clicked
+            return; // Exit the function for now
+        }
+
+        // Set button to loading state, use the original text from the button itself
+        toggleLoading(button, true, button.dataset.originalText);
+
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/process', { // Corrected URL and generic endpoint
+                method: "POST",
+                headers: {
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify({
+                    'action_type': actionType, // Crucial: tell backend what action to perform
+                    'study_material': studyMaterial,
+                    'concept': concept,
+                    'subject': subject,
+                    'class': sclass,
+                    'modal_keyword': modalKeyword
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json(); // Await json parsing
+                console.error("Backend error:", errorData);
+                errorMessageDiv.classList.remove('hidden');
+                errorTextP.innerText = errorData.error || `Failed to process request (Status: ${response.status}).`;
+                return;
+            }
+
+            const data = await response.json();
+            console.log("Full response data from backend:", data);
+
+
+            responseContainerDiv.classList.remove('hidden'); // Always show the main container
+            document.getElementById('downloadPdfButton').classList.remove('hidden'); // Show download button
+
+            if (actionType === 'flashcards' && data.flashcards && Array.isArray(data.flashcards)) {
+                responseTitle.innerText = 'Flashcards:'; // Set title for flashcards
+                flashcardContainerDiv.innerHTML = ''; // Ensure flashcards are cleared first
+                data.flashcards.forEach(card => {
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'bg-slate-600 p-4 rounded-lg border border-slate-500 shadow-md mb-4'; // Your flashcard styling
+                    cardElement.innerHTML = `
+                        <h3 class="text-xl font-semibold text-blue-300 mb-2">Q: ${marked.parse(card.question || '')}</h3>
+                        <p class="text-slate-200 mt-2">A: ${marked.parse(card.answer || '')}</p>
+                    `;
+                    flashcardContainerDiv.appendChild(cardElement);
+                });
+                responseTextDiv.style.display = 'none'; // Hide text div for flashcards
+                flashcardContainerDiv.style.display = 'grid'; // Show grid for flashcards
+            } else if (data.explanation) { // Assuming other actions return 'explanation'
+                responseTitle.innerText = button.dataset.originalText || 'AI Output:'; // Set title based on button or default
+                responseTextDiv.innerHTML = marked.parse(data.explanation);
+                responseTextDiv.style.display = 'block'; // Show text div
+                flashcardContainerDiv.style.display = 'none'; // Hide flashcard grid
+            } else {
+                // Fallback for unexpected response structure
+                responseTitle.innerText = 'AI Output:';
+                responseTextDiv.innerHTML = marked.parse(JSON.stringify(data, null, 2)); // Show raw JSON for debugging
+                responseTextDiv.style.display = 'block';
+                flashcardContainerDiv.style.display = 'none';
+            }
+
+        }
+        catch (error) {
+            console.error("Error during fetch or processing:", error);
+            errorMessageDiv.classList.remove('hidden');
+            errorTextP.innerText = `An unexpected error occurred: ${error.message}. Please try again.`;
+        } finally {
+            // Reset button to its original text
+            toggleLoading(button, false, button.dataset.originalText);
+        }
+    }
+
+    // --- Event Listeners for ALL Action Buttons and Other UI ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const actionButtons = document.querySelectorAll('.action-button');
+        const studyMaterialTextarea = document.getElementById('studyMaterialText');
+        const conceptInput = document.getElementById('conceptInput');
+        const keywordInput = document.getElementById('keywordInput');
+        const keywordModalOverlay = document.getElementById('keywordModalOverlay');
+        const cancelKeywordButton = document.getElementById('cancelKeywordButton');
+        const confirmKeywordButton = document.getElementById('confirmKeywordButton');
+
+        let currentActionButton = null; // To store which button triggered the modal
+
+        actionButtons.forEach(button => {
+            // Store original text for toggleLoading from the button's span
+            button.dataset.originalText = button.querySelector('.button-text').innerText;
+
+            // Attach click listener
+            button.addEventListener('click', () => {
+                const actionType = button.dataset.action;
+                const studyMaterial = studyMaterialTextarea.value.trim();
+                const concept = conceptInput.value.trim();
+
+                if (!studyMaterial && !concept) {
+                    // If no material or concept, show modal
+                    keywordModalOverlay.classList.remove('hidden');
+                    currentActionButton = button;
+                } else {
+                    // Otherwise, proceed directly
+                    sendDataToBackend(button, actionType, '');
+                }
+            });
+        });
+
+        // --- Modal Button Listeners ---
+        cancelKeywordButton.addEventListener('click', () => {
+            keywordModalOverlay.classList.add('hidden');
+            // If a button was in loading state before showing modal, reset it
+            if (currentActionButton) {
+                toggleLoading(currentActionButton, false, currentActionButton.dataset.originalText);
+                currentActionButton = null;
+            }
+        });
+
+        confirmKeywordButton.addEventListener('click', () => {
+            const modalKeyword = keywordInput.value.trim();
+            if (!modalKeyword) {
+                alert('Please enter a keyword or cancel.');
+                return;
+            }
+            keywordModalOverlay.classList.add('hidden');
+            if (currentActionButton) {
+                // Now, call the backend function with the keyword
+                sendDataToBackend(currentActionButton, currentActionButton.dataset.action, modalKeyword);
+                currentActionButton = null;
+            }
+        });
+
+        // --- PDF/URL Loading Logic ---
+        const fileInput = document.getElementById('fileInput');
+        const loadFileButton = document.getElementById('loadFileButton');
+        const urlInput = document.getElementById('urlInput');
+        const loadUrlButton = document.getElementById('loadUrlButton');
+        const fileWarning = document.getElementById('fileWarning');
+        const urlWarning = document.getElementById('urlWarning');
+
+        // Display warnings for file input
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file && file.type === 'application/pdf') {
+                fileWarning.classList.remove('hidden');
+            } else {
+                fileWarning.classList.add('hidden');
+            }
+        });
+        // Display warnings for URL input
+        urlInput.addEventListener('input', () => {
+            if (urlInput.value.trim() !== '') {
+                urlWarning.classList.remove('hidden');
+            } else {
+                urlWarning.classList.add('hidden');
+            }
+        });
+
+
+        loadFileButton.addEventListener('click', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (file.type === 'text/plain') {
+                        studyMaterialTextarea.value = e.target.result;
+                    } else if (file.type === 'application/pdf') {
+                        alert("PDF files can't be directly parsed for text here client-side. Please copy-paste text from the PDF into the text area. Only .txt files can be loaded directly.");
+                    }
+                };
+                reader.readAsText(file); // Try reading as text for TXT files
+            } else {
+                alert("Please select a file to load.");
+            }
+        });
+
+        loadUrlButton.addEventListener('click', async () => {
+            const url = urlInput.value.trim();
+            if (!url) {
+                alert("Please enter a URL.");
+                return;
+            }
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const text = await response.text();
+                studyMaterialTextarea.value = text;
+            } catch (error) {
+                console.error("Error loading URL:", error);
+                alert(`Failed to load content from URL: ${error.message}. This is often due to CORS policy. Please copy-paste the content instead.`);
+            }
+        });
+
+        // --- Download PDF Button Logic ---
+        const downloadPdfButton = document.getElementById('downloadPdfButton');
+        downloadPdfButton.addEventListener('click', () => {
+            const element = document.getElementById('genresp'); // The div containing your AI output
+            if (element.classList.contains('hidden')) {
+                alert("Generate some notes first!");
+                return;
+            }
+            html2pdf().from(element).save('Lord_Stylo_Notes.pdf');
+        });
+    });
+</script>
+
+</style>
+</body>
+</html>
