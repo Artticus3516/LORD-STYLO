@@ -177,7 +177,8 @@ def ask_gemini(action_type: str, study_material: str, concept: str, subject: str
     try:
         model = genai.GenerativeModel('gemini-2.0-flash') # Get the model instance
 
-        response = model.generate_content_async(
+
+        response = model.generate_content(
             contents=chat_history,
             generation_config=generation_config
         )

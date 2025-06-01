@@ -9,7 +9,7 @@ CORS(app)
 def lead():
     return send_from_directory('public','feed.html')
 @app.route('/api/process', methods=['POST'])
-async def explain_concept():
+def explain_concept():
     try:
         data = request.json
         action_type = data.get('action_type')
@@ -19,7 +19,7 @@ async def explain_concept():
         sclass = data.get('class', '')
         modal_keyword = data.get('modal_keyword', '')
 
-        explanation = await ask_gemini(action_type,study_material,concept,subject,sclass,modal_keyword)
+        explanation = ask_gemini(action_type,study_material,concept,subject,sclass,modal_keyword)
         if action_type == "flashcards":
             try:
                 resp = json.loads(explanation)
