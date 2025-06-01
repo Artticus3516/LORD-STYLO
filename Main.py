@@ -10,10 +10,10 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 # Initialize Gemini client only if API key is available
 if GEMINI_API_KEY:
-    client = genai.Client(api_key=GEMINI_API_KEY)
+    genai.configure(api_key=GEMINI_API_KEY)
 else:
-    print("Warning: GEMINI_API_KEY not found in environment variables. Gemini API calls will fail.")
-    client = None # Set client to None if API key is missing
+
+    print("Error: GEMINI_API_KEY not found in environment variables. Gemini API calls will fail.")
 
 # --- Helper Functions for Context (Already generalized, good job!) ---
 
@@ -146,45 +146,44 @@ def build_prompt(action_type: str, study_material: str, concept: str, subject: s
 # --- Updated: Unified Gemini API Call Function ---
 
 async def ask_gemini(action_type: str, study_material: str, concept: str, subject: str, sclass: str, modal_keyword: str = '') -> str:
-    if client is None:
-        return "Error: Gemini API client not initialized. API key might be missing."
+
+    if not GEMINI_API_KEY:
+        return "Error: Gemini API key is missing or not configured. Cannot make API calls."
 
     prompt = build_prompt(action_type, study_material, concept, subject, sclass, modal_keyword)
 
     # For flashcards, we expect JSON output, so we need a schema
     schema = None
-    if action_type == 'flashcards':
-        schema = {
-            "type": "ARRAY",
-            "items": {
-                "type": "OBJECT",
-                "properties": {
-                    "question": { "type": "STRING" },
-                    "answer": { "type": "STRING" }
-                },
-                "propertyOrdering": ["question", "answer"]
-            }
-        }
+    generation_config = {}
+    # if action_type == 'flashcards':
+    #     schema = {
+    #         "type": "ARRAY",
+    #         "items": {
+    #             "type": "OBJECT",
+    #             "properties": {
+    #                 "question": { "type": "STRING" },
+    #                 "answer": { "type": "STRING" }
+    #             },
+    #             "propertyOrdering": ["question", "answer"]
+    #         }
+    #     }
+    #     generation_config["responseMimeType"] = "application/json"
+    #     generation_config["responseSchema"] = schema
+
 
     chat_history = []
     chat_history.append({ "role": "user", "parts": [{ "text": prompt }] })
 
-    payload = { "contents": chat_history }
-    if schema:
-        payload["generationConfig"] = {
-            "responseMimeType": "application/json",
-            "responseSchema": schema
-        }
-
     try:
+        model = genai.GenerativeModel('gemini-2.0-flash') # Get the model instance
 
-        response =client.models.generate_content(
-            model='gemini-2.0-flash', # Using gemini-2.0-flash as per instructions
-            contents=payload["contents"],
-
+        response = await model.generate_content_async( # Use the async method
+            contents=chat_history,
+            generation_config=generation_config
         )
+
         return response.text
     except Exception as e:
         print(f"Error calling Gemini API: {e}")
-        return f"Contact Artticus, AI failed: {e}"
 
+        return f"Contact Artticus, AI failed: {e}"
