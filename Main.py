@@ -145,7 +145,7 @@ def build_prompt(action_type: str, study_material: str, concept: str, subject: s
 
 # --- Updated: Unified Gemini API Call Function ---
 
- def ask_gemini(action_type: str, study_material: str, concept: str, subject: str, sclass: str, modal_keyword: str = '') -> str:
+def ask_gemini(action_type: str, study_material: str, concept: str, subject: str, sclass: str, modal_keyword: str = '') -> str:
 
     if not GEMINI_API_KEY:
         return "Error: Gemini API key is missing or not configured. Cannot make API calls."
