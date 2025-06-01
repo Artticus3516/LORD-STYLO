@@ -145,7 +145,7 @@ def build_prompt(action_type: str, study_material: str, concept: str, subject: s
 
 # --- Updated: Unified Gemini API Call Function ---
 
-async def ask_gemini(action_type: str, study_material: str, concept: str, subject: str, sclass: str, modal_keyword: str = '') -> str:
+ def ask_gemini(action_type: str, study_material: str, concept: str, subject: str, sclass: str, modal_keyword: str = '') -> str:
 
     if not GEMINI_API_KEY:
         return "Error: Gemini API key is missing or not configured. Cannot make API calls."
@@ -177,7 +177,7 @@ async def ask_gemini(action_type: str, study_material: str, concept: str, subjec
     try:
         model = genai.GenerativeModel('gemini-2.0-flash') # Get the model instance
 
-        response = await model.generate_content_async( # Use the async method
+        response = model.generate_content_async(
             contents=chat_history,
             generation_config=generation_config
         )
