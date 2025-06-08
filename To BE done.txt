@@ -1,8 +1,0 @@
-Create a warning sign that it will take some time
-create the Ip logging
-create the limiting Feature
-Create the actuall LLM
-
-
-
-CREATE A DIFF CLOMMAND
