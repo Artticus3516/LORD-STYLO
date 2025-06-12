@@ -1,8 +1,8 @@
-Lord Stylo: Intelligent AI Study Assistant
-Project Overview
+**Lord Stylo: Intelligent AI Study Assistant**
+**Project Overview**
 Lord Stylo is an innovative AI-powered application designed to enhance the study experience for high school students. It leverages the Gemini API to provide dynamic assistance, primarily by generating comprehensive notes and helping students understand complex topics in a clear and engaging manner. This project demonstrates the practical application of Artificial Intelligence and Natural Language Processing to create personalized and effective learning tools, aiming to simplify complex information and improve comprehension for young learners.
 
-Features
+**Features**
 AI-Powered Note Generation: Automatically creates concise and comprehensive study notes from input text/topics.
 
 Concept Simplification: Explains difficult subjects in an easy-to-understand way, tailored for high school comprehension.
@@ -13,18 +13,18 @@ User-Friendly Interface: Designed for intuitive navigation and seamless interact
 
 Generates questions: Analyzes previous year question papers to give you the best result 
 
-Technologies Used
+**Technologies Used**
 Core AI
 Gemini API: Utilized for advanced text generation, summarization, and conceptual explanation.
 
-Software / Application
+**Software / Application**
 Programming Language: [e.g., Python, JavaScript (Node.js for backend if web-based)]
 
 Frameworks/Libraries: [e.g., Flask/Django (Python backend), React/Next.js (Web UI), specific NLP/data handling libraries]
 
 Database (if applicable): [e.g., SQLite, MySQL for user data or saved notes]
 
-Deployment / Hosting (if applicable)
+**Deployment / Hosting (if applicable)**
 Platform: [e.g., Local server, Heroku, Vercel, Google Cloud Platform]
 
 Architecture (High-Level)
@@ -43,20 +43,8 @@ The system typically involves a user interface where students input their querie
                                              | user preferences) |
                                              +-----------------+
 
-(Replace this diagram with a more specific one if you have one, or describe your flow in more detail.)
 
-Setup and Installation (Conceptual)
-To set up and run Lord Stylo, one would typically:
 
-Backend Setup: Install necessary dependencies for the backend (e.g., Python libraries for Flask/Django).
-
-API Key Configuration: Configure the application with a valid Gemini API key.
-
-Database Initialization (if applicable): Set up and initialize the database schema.
-
-Frontend Deployment: Deploy the web application or mobile app.
-
-Run Application: Start the backend server and ensure it communicates with the frontend.
 
 Usage
 Once Lord Stylo is running, students can:
